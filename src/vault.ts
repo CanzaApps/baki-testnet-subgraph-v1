@@ -1,16 +1,19 @@
 import {
-  AdminChanged as AdminChangedEvent,
-  BeaconUpgraded as BeaconUpgradedEvent,
-  Upgraded as UpgradedEvent
+  Deposit as DepositEvent,
+  Swap as SwapEvent,
+  Withdraw as WithdrawEvent,
+  Liquidate as LiquidateEvent
 } from "../generated/Vault/Vault"
-import { AdminChanged, BeaconUpgraded, Upgraded } from "../generated/schema"
+import { Deposit, Swap, Withdraw, Liquidate } from "../generated/schema"
 
-export function handleAdminChanged(event: AdminChangedEvent): void {
-  let entity = new AdminChanged(
+
+export function handleDeposit(event: DepositEvent): void {
+  let entity = new Deposit(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  entity.previousAdmin = event.params.previousAdmin
-  entity.newAdmin = event.params.newAdmin
+  entity.account = event.params._account
+  entity.depositAmount = event.params._depositAmount
+  entity.mintAmount = event.params._mintAmount
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
@@ -19,11 +22,13 @@ export function handleAdminChanged(event: AdminChangedEvent): void {
   entity.save()
 }
 
-export function handleBeaconUpgraded(event: BeaconUpgradedEvent): void {
-  let entity = new BeaconUpgraded(
+export function handleSwap(event: SwapEvent): void {
+  let entity = new Swap(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  entity.beacon = event.params.beacon
+
+  entity.zTokenFrom = event.params._zTokenFrom
+  entity.amount = event.params._amount
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
@@ -32,11 +37,29 @@ export function handleBeaconUpgraded(event: BeaconUpgradedEvent): void {
   entity.save()
 }
 
-export function handleUpgraded(event: UpgradedEvent): void {
-  let entity = new Upgraded(
+export function handleWithdraw(event: WithdrawEvent): void {
+  let entity = new Withdraw(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  entity.implementation = event.params.implementation
+  entity.account = event.params._account
+  entity.zToken = event.params._token
+  entity.amount = event.params._amountToWithdraw
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleLiquidate(event: LiquidateEvent): void {
+  let entity = new Liquidate(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.account = event.params._account
+  entity.debt = event.params.debt
+  entity.rewards = event.params.rewards
+  entity.liquidator = event.params.liquidator
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp

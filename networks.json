@@ -3,6 +3,21 @@
     "Vault": {
       "address": "0xF43Ee2530B3fc9Ea00fb273427e13983F33a545E",
       "startBlock": 27319840
+    },
+    "Oracle": {
+      "address": "0xEdE0Aa0199C62220F88b67f9099dC3d732e1016f"
+    },
+    "ZUSD": {
+      "address": "0xBD7512b7186E61C93dc48e98d3fb09aBf64d0d41"
+    },
+    "ZNGN": {
+      "address": "0xCF4f2c7147440b73011802533d7f034E3F94295F"
+    },
+    "ZZAR": {
+      "address": "0x6F4FaC50002e06E78B807A265007C121271C0bdA"
+    },
+    "ZXAF": {
+      "address": "0x2b339f67866CBCb5A9C887DD4312Ea484261959c"
     }
   }
 }
